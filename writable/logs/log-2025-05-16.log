@@ -1,0 +1,36 @@
+ERROR - 2025-05-16 17:06:44 --> Cannot delete or update a parent row: a foreign key constraint fails (`blog_db`.`posts`, CONSTRAINT `posts_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE)
+CRITICAL - 2025-05-16 17:06:44 --> Cannot delete or update a parent row: a foreign key constraint fails (`blog_db`.`posts`, CONSTRAINT `posts_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('DELETE FROM `categories`
+WHERE `id` = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `categories`
+WHERE `id` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `categories`
+WHERE `id` = \'1\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2358): CodeIgniter\Database\BaseConnection->query('DELETE FROM `categories`
+WHERE `id` = :id:', [...], false)
+ 5 SYSTEMPATH\Model.php(400): CodeIgniter\Database\BaseBuilder->delete()
+ 6 SYSTEMPATH\BaseModel.php(963): CodeIgniter\Model->doDelete(null, false)
+ 7 APPPATH\Controllers\Main.php(189): CodeIgniter\BaseModel->delete()
+ 8 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Main->category_delete('1')
+ 9 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Main))
+10 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
+ERROR - 2025-05-16 17:06:49 --> Cannot delete or update a parent row: a foreign key constraint fails (`blog_db`.`posts`, CONSTRAINT `posts_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE)
+CRITICAL - 2025-05-16 17:06:49 --> Cannot delete or update a parent row: a foreign key constraint fails (`blog_db`.`posts`, CONSTRAINT `posts_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('DELETE FROM `categories`
+WHERE `id` = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(695): CodeIgniter\Database\MySQLi\Connection->execute('DELETE FROM `categories`
+WHERE `id` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(609): CodeIgniter\Database\BaseConnection->simpleQuery('DELETE FROM `categories`
+WHERE `id` = \'1\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2358): CodeIgniter\Database\BaseConnection->query('DELETE FROM `categories`
+WHERE `id` = :id:', [...], false)
+ 5 SYSTEMPATH\Model.php(400): CodeIgniter\Database\BaseBuilder->delete()
+ 6 SYSTEMPATH\BaseModel.php(963): CodeIgniter\Model->doDelete(null, false)
+ 7 APPPATH\Controllers\Main.php(189): CodeIgniter\BaseModel->delete()
+ 8 SYSTEMPATH\CodeIgniter.php(896): App\Controllers\Main->category_delete('1')
+ 9 SYSTEMPATH\CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Main))
+10 SYSTEMPATH\CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(55): CodeIgniter\CodeIgniter->run()
