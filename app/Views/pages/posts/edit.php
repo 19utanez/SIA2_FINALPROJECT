@@ -2,128 +2,132 @@
 
 <?= $this->section('custom_css') ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" integrity="sha512-ngQ4IGzHQ3s/Hh8kMyG4FC74wzitukRMIcTOoKT3EyzFZCILOPF0twiXOQn75eDINUfKBYmzYn2AA8DkAk8veQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js" integrity="sha512-6F1RVfnxCprKJmfulcxxym1Dar5FsT/V2jiEUvABiaEiFWoQ8yHvqRM/Slf0qJKiwin6IDQucjXuolCfCKnaJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
-    #img-viewer{
-        width:100%;
-        max-height:20em;
-        object-fit:scale-down;
-        object-position:center center;
+    #img-viewer {
+        width: 100%;
+        max-height: 300px;
+        object-fit: contain;
     }
-    .form-group.note-form-group.note-group-select-from-files {
-        display: none;
+    .note-group-select-from-files {
+        display: none !important;
     }
 </style>
 <?= $this->endSection() ?>
+
 <?= $this->section('content') ?>
-<div class="card rounded-0">
-    <div class="card-header">
-        <div class="d-flex w-100 justify-content-between">
-            <div class="col-auto">
-                <div class="card-title h4 mb-0 fw-bolder">Edit Post</div>
-            </div>
-            <div class="col-auto">
-                <a href="<?= base_url('Main/Posts') ?>" class="btn btn btn-light bg-gradient border rounded-0"><i class="fa fa-angle-left"></i> Back to List</a>
-            </div>
-        </div>
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center bg-light">
+        <h5 class="mb-0 fw-semibold">Edit Post</h5>
+        <a href="<?= base_url('Main/Posts') ?>" class="btn btn-sm btn-outline-secondary">
+            <i class="fa fa-angle-left"></i> Back to List
+        </a>
     </div>
     <div class="card-body">
-        <div class="container-fluid">
-            <form action="<?= base_url('Main/post_edit/'.(isset($post['id']) ? $post['id'] : '')) ?>" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="user_id" value="<?= $session->login_id ?>">
-                <?php if($session->getFlashdata('error')): ?>
-                    <div class="alert alert-danger rounded-0">
-                        <?= $session->getFlashdata('error') ?>
-                    </div>
-                <?php endif; ?>
-                <?php if($session->getFlashdata('success')): ?>
-                    <div class="alert alert-success rounded-0">
-                        <?= $session->getFlashdata('success') ?>
-                    </div>
-                <?php endif; ?>
-                <div class="mb-3 col-lg-6 col-md-6 col-sm-10 col-xs-12">
-                    <label for="category_id" class="control-label">Category</label>
-                    <select class="form-select rounded-0" id="category_id" name="category_id" autofocus required="required">
-                        <option value="" disabled <?= (!isset($post['category_id']) ? 'selected' : '') ?>></option>
+        <form action="<?= base_url('Main/post_edit/' . esc($post['id'])) ?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="user_id" value="<?= esc($session->login_id) ?>">
+
+            <?php if ($session->getFlashdata('error')): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= $session->getFlashdata('error') ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+            <?php if ($session->getFlashdata('success')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= $session->getFlashdata('success') ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="category_id" class="form-label">Category</label>
+                    <select class="form-select" id="category_id" name="category_id" required>
+                        <option value="" disabled <?= !isset($post['category_id']) ? 'selected' : '' ?>>Select a category</option>
                         <?php foreach($categories as $row): ?>
-                            <option value="<?= $row['id'] ?>" <?= (isset($post['category_id']) && $post['category_id'] == $row['id'] ? 'selected' : '') ?>><?= $row['name'] ?></option>
+                            <option value="<?= $row['id'] ?>" <?= $post['category_id'] == $row['id'] ? 'selected' : '' ?>>
+                                <?= esc($row['name']) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label for="title" class="control-label">Title</label>
-                    <input type="text" class="form-control rounded-0" id="title" name="title" value="<?= isset($post['title']) ? $post['title'] : '' ?>" required="required">
+
+                <div class="col-12">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<?= esc($post['title']) ?>" required>
                 </div>
-                <div class="mb-3">
-                    <label for="short_description" class="control-label">Description</label>
-                    <textarea rows="4" class="form-control rounded-0" id="short_description" name="short_description" value="" required="required"><?= isset($post['short_description']) ? $post['short_description'] : '' ?></textarea>
+
+                <div class="col-12">
+                    <label for="short_description" class="form-label">Description</label>
+                    <textarea class="form-control" id="short_description" name="short_description" rows="3" required><?= esc($post['short_description']) ?></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="content" class="control-label">Content</label>
-                    <textarea rows="5" class="form-control rounded-0" id="content" name="content" value="" required="required"><?= isset($post['content']) ? $post['content'] : '' ?></textarea>
+
+                <div class="col-12">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea class="form-control" id="content" name="content" required><?= esc($post['content']) ?></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="tags" class="control-label">Tags</label>
-                    <textarea rows="5" class="form-control rounded-0" id="tags" name="tags" value="" required="required"><?= isset($post['tags']) ? $post['tags'] : '' ?></textarea>
-                    <small class="text-muted">(seperate your tags using ',' comma)</small>
+
+                <div class="col-12">
+                    <label for="tags" class="form-label">Tags</label>
+                    <textarea class="form-control" id="tags" name="tags" rows="2" required><?= esc($post['tags']) ?></textarea>
+                    <small class="text-muted">Separate your tags using commas (e.g., php, blog, codeigniter)</small>
                 </div>
-                <div class="mb-3 col-lg-6 col-md-6 col-sm-10 col-xs-12">
-                    <label for="banner_img" class="form-label">Image</label>
-                    <input class="form-control  rounded-0" type="file" name="banner_img" id="banner_img" onchange="display_img(this)" accept="image/*">
+
+                <div class="col-md-6">
+                    <label for="banner_img" class="form-label">Change Image</label>
+                    <input class="form-control" type="file" name="banner_img" id="banner_img" accept="image/*" onchange="display_img(this)">
                 </div>
-                <div class="mb-3 col-lg-6 col-md-6 col-sm-10 col-xs-12">
-                    <center>
-                        <img src="<?= isset($post['banner']) ? $post['banner'] : '' ?>" alt="Browse Image" class="img-thumbnail p-0 border rounded-0 bg-dark bg-gradient bg-opacity-50" id="img-viewer">
-                    </center>
+
+                <div class="col-md-6 text-center">
+                    <label class="form-label d-block">Current Image</label>
+                    <img id="img-viewer" class="img-fluid img-thumbnail bg-light" src="<?= esc($post['banner']) ?>" alt="Image Preview">
                 </div>
-                <div class="mb-3 col-lg-6 col-md-6 col-sm-10 col-xs-12">
-                    <label for="status" class="control-label">Status</label>
-                    <select name="status" id="status" class="form-select rounded-0" required="required">
-                        <option value="1" <?= (isset($post['status']) && $post['status'] == 1 ? 'selected' : '') ?>>Published</option>
-                        <option value="0" <?= (isset($post['status']) && $post['status'] == 0 ? 'selected' : '') ?>>Unpublished</option>
+
+                <div class="col-md-6">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select" required>
+                        <option value="1" <?= $post['status'] == 1 ? 'selected' : '' ?>>Published</option>
+                        <option value="0" <?= $post['status'] == 0 ? 'selected' : '' ?>>Unpublished</option>
                     </select>
                 </div>
-                <div class="d-grid gap-1">
-                    <button class="btn rounded-0 btn-primary bg-gradient">Save</button>
-                </div>
-            </form>
-        </div>
+            </div>
+
+            <div class="d-grid mt-4">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save me-1"></i> Save Changes</button>
+            </div>
+        </form>
     </div>
 </div>
 <?= $this->endSection() ?>
+
 <?= $this->section('custom_js') ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js" integrity="sha512-6F1RVfnxCprKJmfulcxxym1Dar5FsT/V2jiEUvABiaEiFWoQ8yHvqRM/Slf0qJKiwin6IDQucjXuolCfCKnaJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    function display_img(input){
-        if(input.files && input.files[0]){
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $('#img-viewer').attr('src', e.target.result)
+    function display_img(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('img-viewer').src = e.target.result;
             }
-            reader.readAsDataURL(input.files[0])
-        }else{
-            $('#img-viewer').attr('src', '')
+            reader.readAsDataURL(input.files[0]);
         }
     }
-    $(function(){
-        $('#category_id').select2({
-            placeholder:'Please select category here',
-            width:'100%',
-            containerCssClass:'form-control rounded-0 py-0 h-auto'
-        })
+
+    $(function () {
         $('#content').summernote({
-            placeholder:'Write your content here.',
-            height:'20em',
+            placeholder: 'Write your content here...',
+            height: 300,
             toolbar: [
-		            [ 'style', [ 'style' ] ],
-		            [ 'font', [ 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear'] ],
-		            [ 'fontname', [ 'fontname' ] ],
-		            [ 'fontsize', [ 'fontsize' ] ],
-		            [ 'color', [ 'color' ] ],
-		            [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
-		            [ 'table', [ 'table', 'picture', 'video'] ],
-		            [ 'view', [ 'undo', 'redo', 'help' ] ]
-		        ]
-        })
-    })
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    });
 </script>
 <?= $this->endSection() ?>

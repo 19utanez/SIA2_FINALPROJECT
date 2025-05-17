@@ -8,6 +8,14 @@ class Main extends BaseController
 {   
     protected $request;
 
+    protected $session;
+    protected $db;
+    protected $auth_model;
+    protected $category_model;
+    protected $post_model;
+    protected $data;
+            
+
     public function __construct()
     {
         $this->request = \Config\Services::request();

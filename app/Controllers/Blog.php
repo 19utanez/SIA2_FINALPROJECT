@@ -9,7 +9,15 @@ use App\Models\Posts;
 
 class Blog extends BaseController
 {
-    public function __construct()
+        protected $session;
+        protected $request;
+        protected $db;
+        protected $auth_model;
+        protected $category_model;
+        protected $post_model;
+        protected $data;
+        
+        public function __construct()
     {
         $this->request = \Config\Services::request();
         $this->session = session();

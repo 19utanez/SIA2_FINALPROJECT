@@ -8,6 +8,11 @@ class Auth extends BaseController
 {
     protected $request;
     protected $auth_model;
+    protected $session;
+    protected $db;
+    protected $category_model;
+    protected $post_model;
+    protected $data;
 
     public function __construct()
     {
